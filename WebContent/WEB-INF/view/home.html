@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Appointments</title>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#appointMntFrm").hide();
+
+    $("#openAppointMntForm").click(function(){
+        $("#searchAppointMntFrm").hide();
+        $("#appointMntFrm").show();
+    });
+    $("#cancelAppointMntForm").click(function(){
+    	 $("#appointMntFrm").hide();
+    	 $("#searchAppointMntFrm").show();
+    });
+});
+</script>
+</head>
+<body>
+	<h2>${success}</h2>
+<input id="openAppointMntForm" type="button" value="New"/>
+<br/>
+<br/>
+<div id="searchAppointMntFrm">
+
+<table>
+<tr>
+<td>
+<input id="appointMntFltr" type="text" name="appointMntFltr"/>
+</td>
+<td>
+<input id="search" type="button" value="Search"/>
+</td>
+</tr>
+
+</table>
+
+</div>
+
+<div id="appointMntFrm">
+<form action="/Appointments/add" method="post">
+<table>
+<tr>
+<td><input id="addAppointMntForm" type="submit" value="ADD"/> <input id="cancelAppointMntForm" type="button" value="CANCEL"/>
+</td>
+</tr>
+</table>
+<br/>
+<br/>
+<table>
+<tr>
+<td>DATE</td>
+<td>
+<input id="date" type="text" name="date"/>
+</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>
+<input id="time" type="text" name="time"/>
+</td>
+</tr>
+<tr>
+<td>DESC</td>
+<td>
+<input id="desc" type="text" name="desc"/>
+</td>
+</tr>
+
+</table>
+
+</form>
+
+</div>
+
+</body>
+</html>

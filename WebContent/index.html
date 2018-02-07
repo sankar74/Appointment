@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Appointments</title>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    $("#appointMntFrm").hide();
+
+    $("#openAppointMntForm").click(function(){
+        $("#searchAppointMntFrm").hide();
+        $("#appointMntFrm").show();
+        $("#results").hide();
+        $("#openAppointMntForm").hide();
+        
+    });
+    $("#cancelAppointMntForm").click(function(){
+    	 $("#appointMntFrm").hide();
+    	 $("#searchAppointMntFrm").show();
+    	 $("#openAppointMntForm").show();
+    });
+    
+    $("#search").click(function() {
+    	 $("#results").show();
+    	$("#results tr").remove();
+    	$.ajax({
+    	    url: 'rest/search',
+    	    type: 'POST',
+    	    data: { "searchParam": $('#appointMntFltr').val()},
+    	    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+    	    success: function (response) {
+    	    	var myObj = JSON.stringify(response);
+    	    	
+    	    	if(JSON.parse(myObj).length == 0){
+    	    		alert("No Appointment Details Found for the Search Parameter");
+    	    	}else{
+    	    	 var html = '<tr><td width="200px">  <b>DATE</b>  </td><td width="200px">  <b>TIME</b>  </td><td width="200px">  <b>DESC</b>  </td>';
+    	    	  $.each(JSON.parse(myObj), function () {
+    	    		  html += '<tr><td>'+this.date+'</td><td>'+this.time+'</td><td>'+this.desc+'</td></tr>' ;    	    	      
+    	    	    });
+    	    	  $('#results').append(html);
+    	    }
+       	  
+    	    },
+    	    error: function (error) {
+    	        alert("error" +JSON.stringify(error));
+    	    }
+    	}); 
+    	
+    	
+    	
+    });
+    
+    
+    $("#addAppointMntForm").click(function() {
+
+    	$.ajax({
+    	    url: 'rest/add',
+    	    type: 'POST',
+    	    data: { "date": $('#date').val(), "time": $('#time').val(),"desc": $('#desc').val() },
+    	    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+    	    success: function (response) {
+    	        alert(response);
+    	        $('#date').val('');
+    	        $('#time').val('');
+    	        $('#desc').val('');
+    	    },
+    	    error: function (error) {
+    	        alert("error" +JSON.stringify(error));
+    	    }
+    	}); 
+    	
+    });
+    
+});
+</script>
+</head>
+<body>
+
+<center><h1><u>Appointment Time</u></h1></center>
+
+<div style="margin-left: 30px;">
+
+<br/>
+<br/>
+
+<input id="openAppointMntForm" type="button" value="New" style="font-weight: bold;"/>
+<br/>
+<br/>
+
+<div id="searchAppointMntFrm">
+<!-- <form action="/Appointments/rest/search" method="get">-->
+<table>
+<tr>
+<td>
+<input id="appointMntFltr" type="text" name="appointMntFltr"/>
+</td>
+<td>
+<input id="search" type="button" value="Search" style="font-weight: bold;"/>
+</td>
+</tr>
+
+</table>
+<!-- </form> -->
+</div>
+
+<div id="appointMntFrm">
+<!-- <form action="/Appointments/rest/add" method="post"> -->
+<table>
+<tr>
+<td><input id="addAppointMntForm" type="button" value="ADD" style="font-weight: bold;"/> <input id="cancelAppointMntForm" type="button" value="CANCEL" style="font-weight: bold;"/>
+</td>
+</tr>
+</table>
+<br/>
+<br/>
+<table>
+<tr>
+<td>DATE : </td>
+<td>
+<input id="date" type="text" name="date"/>
+</td>
+</tr>
+<tr>
+<td>TIME : </td>
+<td>
+<input id="time" type="text" name="time"/>
+</td>
+</tr>
+<tr>
+<td>DESC : </td>
+<td>
+<input id="desc" type="text" name="desc"/>
+</td>
+</tr>
+
+</table>
+
+<!-- </form>-->
+
+</div>
+
+<br/>
+<br/>
+
+<table id="results" border="1">
+
+</table>
+</div>
+</body>
+</html>
